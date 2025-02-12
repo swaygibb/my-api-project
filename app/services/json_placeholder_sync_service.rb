@@ -11,11 +11,8 @@ class JsonPlaceholderSyncService
     posts = JSON.parse(response)
 
     posts.each do |post_data|
-      Post.find_or_create_by(id: post_data['id']) do |post|
-        post.title = post_data['title']
-        post.body = post_data['body']
-        post.user_id = post_data['userId']
-      end
+      post = Post.find_or_initialize_by(title: post_data['title'], body: post_data['body'], user_id: post_data['userId'])
+      post.save
     end
   end
 end

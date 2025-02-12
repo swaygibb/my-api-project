@@ -7,8 +7,13 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  # Route to check the health of the application
   get 'check_health', to: 'health#check_health'
+
+  # Route to sync posts from an external service
   get 'sync/posts', to: 'sync#sync_posts'
 
+  # Routes for CRUD operations on posts
   resources :posts, only: [:index, :show, :create, :update, :destroy]
 end
