@@ -9,4 +9,6 @@ Rails.application.routes.draw do
   # root "posts#index"
   get 'check_health', to: 'health#check_health'
   get 'sync/posts', to: 'sync#sync_posts'
+
+  resources :posts, only: [:index, :show, :create, :update, :destroy]
 end
