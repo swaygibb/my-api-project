@@ -17,7 +17,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins '69b9-65-61-72-107.ngrok-free.app'  # Appsmith's local URL
+    origins "#{ENV['GROK_URL']}"  # Appsmith's local URL
     resource '*', headers: :any, methods: [:get, :post, :put, :patch, :delete, :options]
   end
 end

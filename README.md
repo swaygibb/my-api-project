@@ -438,4 +438,6 @@ bundle exec rspec
 
 ## Run ngrok
 
+NOTE: you'll have to update ngrok url in env, when started
+
 ngrok http 3000
