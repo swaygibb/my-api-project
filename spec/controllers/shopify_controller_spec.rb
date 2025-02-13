@@ -96,4 +96,24 @@ RSpec.describe ShopifyController, type: :controller do
       end
     end
   end
+
+  describe 'POST #sync_inventory' do
+    before do
+      allow(ShopifyService).to receive(:sync_inventory).and_return(true)
+      post :sync_inventory
+    end
+
+    it 'calls the ShopifyService to sync inventory' do
+      expect(ShopifyService).to have_received(:sync_inventory)
+    end
+
+    it 'returns a successful response' do
+      expect(response).to have_http_status(:ok)
+    end
+
+    it 'returns a success message' do
+      json_response = JSON.parse(response.body)
+      expect(json_response['message']).to eq('Inventory synced successfully')
+    end
+  end
 end
