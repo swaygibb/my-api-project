@@ -138,6 +138,126 @@ This api integrates with the following store: https://swaygibb.myshopify.com
     }
     ```
 
+### Products
+
+#### List Products
+
+- **URL:** `/products`
+- **Method:** `GET`
+- **Description:** Fetches the list of products from the local database and renders them as JSON.
+- **Response:**
+  - **Status 200 OK:**
+    ```json
+    [
+      {
+        "id": 1,
+        "shopify_id": 123456789,
+        "title": "Product 1",
+        "body_html": "<strong>Good product!</strong>",
+        "vendor": "Vendor 1",
+        "product_type": "Type 1",
+        "inventory_quantity": 10,
+        "created_at": "2021-04-01T12:00:00-04:00",
+        "updated_at": "2021-04-01T12:00:00-04:00"
+      },
+      {
+        "id": 2,
+        "shopify_id": 987654321,
+        "title": "Product 2",
+        "body_html": "<strong>Another good product!</strong>",
+        "vendor": "Vendor 2",
+        "product_type": "Type 2",
+        "inventory_quantity": 5,
+        "created_at": "2021-04-01T12:00:00-04:00",
+        "updated_at": "2021-04-01T12:00:00-04:00"
+      }
+    ]
+    ```
+  - **Status 500 Internal Server Error:**
+    ```json
+    {
+      "error": "Error message"
+    }
+    ```
+
+### Customers
+
+#### List Customers
+
+- **URL:** `/customers`
+- **Method:** `GET`
+- **Description:** Fetches the list of customers from the local database and renders them as JSON.
+- **Response:**
+  - **Status 200 OK:**
+    ```json
+    [
+      {
+        "id": 1,
+        "shopify_id": 123456789,
+        "email": "customer1@example.com",
+        "first_name": "John",
+        "last_name": "Doe",
+        "created_at": "2021-04-01T12:00:00-04:00",
+        "updated_at": "2021-04-01T12:00:00-04:00"
+      },
+      {
+        "id": 2,
+        "shopify_id": 987654321,
+        "email": "customer2@example.com",
+        "first_name": "Jane",
+        "last_name": "Doe",
+        "created_at": "2021-04-01T12:00:00-04:00",
+        "updated_at": "2021-04-01T12:00:00-04:00"
+      }
+    ]
+    ```
+  - **Status 500 Internal Server Error:**
+    ```json
+    {
+      "error": "Error message"
+    }
+    ```
+
+### Orders
+
+#### List Orders
+
+- **URL:** `/orders`
+- **Method:** `GET`
+- **Description:** Fetches the list of orders from the local database and renders them as JSON.
+- **Response:**
+  - **Status 200 OK:**
+    ```json
+    [
+      {
+        "id": 1,
+        "shopify_id": 123456789,
+        "email": "customer1@example.com",
+        "total_price": "100.00",
+        "currency": "USD",
+        "order_number": 1001,
+        "created_at": "2021-04-01T12:00:00-04:00",
+        "updated_at": "2021-04-01T12:00:00-04:00"
+      },
+      {
+        "id": 2,
+        "shopify_id": 987654321,
+        "email": "customer2@example.com",
+        "total_price": "200.00",
+        "currency": "USD",
+        "order_number": 1002,
+        "created_at": "2021-04-01T12:00:00-04:00",
+        "updated_at": "2021-04-01T12:00:00-04:00"
+      }
+    ]
+    ```
+  - **Status 500 Internal Server Error:**
+    ```json
+    {
+      "error": "Error message"
+    }
+    ```
+
 ### Posts
 
 #### List Posts
