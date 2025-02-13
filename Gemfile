@@ -59,3 +59,5 @@ group :test do
 end
 
 
+
+gem "shoulda-matchers", "~> 6.4", :group => :test

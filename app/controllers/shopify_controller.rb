@@ -12,8 +12,12 @@ require_relative '../services/shopify_service'
 #   - POST /shopify/sync_products
 #   - Response: JSON message indicating success or error message with status 500.
 
-# - sync_inventory: Syncs products with Shopify and returns a success message.
+# - sync_inventory: Syncs product inventory with Shopify and returns a success message.
 #   - POST /shopify/sync_inventory
+#   - Response: JSON message indicating success or error message with status 500.
+
+# - sync_orders: Syncs orders with Shopify and returns a success message.
+#   - POST /shopify/sync_orders
 #   - Response: JSON message indicating success or error message with status 500.
 class ShopifyController < ApplicationController
   def products
@@ -33,6 +37,13 @@ class ShopifyController < ApplicationController
   def sync_inventory
     ShopifyService.sync_inventory
     render json: { message: 'Inventory synced successfully' }, status: :ok
+  rescue StandardError => e
+    render json: { error: e.message }, status: :internal_server_error
+  end
+
+  def sync_orders
+    ShopifyService.sync_orders
+    render json: { message: 'Orders synced successfully' }, status: :ok
   rescue StandardError => e
     render json: { error: e.message }, status: :internal_server_error
   end
