@@ -8,6 +8,60 @@ A project to show API integration and other things
 
 All endpoints require an `Authorization` header with a static token.
 
+### Shopify Integration
+
+This api integrates with the following store: https://swaygibb.myshopify.com
+
+### Shopify
+
+#### List Products
+
+- **URL:** `/shopify/products`
+- **Method:** `GET`
+- **Description:** Fetches products from the Shopify store and renders them as JSON.
+- **Response:**
+  - **Status 200 OK:**
+    ```json
+    [
+      {
+        "id": 123456789,
+        "title": "Product 1",
+        "body_html": "<strong>Good product!</strong>",
+        "vendor": "Vendor 1",
+        "product_type": "Type 1",
+        "created_at": "2021-04-01T12:00:00-04:00",
+        "handle": "product-1",
+        "updated_at": "2021-04-01T12:00:00-04:00",
+        "published_at": "2021-04-01T12:00:00-04:00",
+        "template_suffix": "",
+        "published_scope": "web",
+        "tags": "",
+        "admin_graphql_api_id": "gid://shopify/Product/123456789"
+      },
+      {
+        "id": 987654321,
+        "title": "Product 2",
+        "body_html": "<strong>Another good product!</strong>",
+        "vendor": "Vendor 2",
+        "product_type": "Type 2",
+        "created_at": "2021-04-01T12:00:00-04:00",
+        "handle": "product-2",
+        "updated_at": "2021-04-01T12:00:00-04:00",
+        "published_at": "2021-04-01T12:00:00-04:00",
+        "template_suffix": "",
+        "published_scope": "web",
+        "tags": "",
+        "admin_graphql_api_id": "gid://shopify/Product/987654321"
+      }
+    ]
+    ```
+  - **Status 500 Internal Server Error:**
+    ```json
+    {
+      "error": "Error message"
+    }
+    ```
+
 ### Posts
 
 #### List Posts

@@ -16,4 +16,7 @@ Rails.application.routes.draw do
 
   # Routes for CRUD operations on posts
   resources :posts, only: [:index, :show, :create, :update, :destroy]
+
+  # Route to fetch products from Shopify
+  get 'shopify/products', to: 'shopify#products'
 end
