@@ -4,6 +4,10 @@ A project to show API integration and other things
 
 ## API Endpoints
 
+### Authentication
+
+All endpoints require an `Authorization` header with a static token.
+
 ### Posts
 
 #### List Posts
