@@ -68,6 +68,7 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 
+  # Set the Authorization header for each request before the test runs
   config.before(:each) do
     request.headers['Authorization'] = ENV['AUTH_TOKEN']
   end
