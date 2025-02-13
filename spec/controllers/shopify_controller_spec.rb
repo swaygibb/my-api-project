@@ -155,4 +155,42 @@ RSpec.describe ShopifyController, type: :controller do
       end
     end
   end
+
+  describe 'POST #sync_customers' do
+    context 'when sync is successful' do
+      before do
+        allow(ShopifyService).to receive(:sync_customers).and_return(true)
+        post :sync_customers
+      end
+
+      it 'calls the ShopifyService to sync customers' do
+        expect(ShopifyService).to have_received(:sync_customers)
+      end
+
+      it 'returns a successful response' do
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'returns a success message' do
+        json_response = JSON.parse(response.body)
+        expect(json_response['message']).to eq('Customers synced successfully.')
+      end
+    end
+
+    context 'when an error occurs' do
+      before do
+        allow(ShopifyService).to receive(:sync_customers).and_raise(StandardError.new('Something went wrong'))
+        post :sync_customers
+      end
+
+      it 'returns an internal server error response' do
+        expect(response).to have_http_status(:internal_server_error)
+      end
+
+      it 'returns the error message as JSON' do
+        json_response = JSON.parse(response.body)
+        expect(json_response['error']).to eq('Something went wrong')
+      end
+    end
+  end
 end

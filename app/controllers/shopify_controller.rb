@@ -1,24 +1,17 @@
 require_relative '../services/shopify_service'
 
-# ShopifyController handles requests related to Shopify products.
-# It provides actions to fetch and sync products with Shopify.
-
+# ShopifyController handles various Shopify-related actions such as fetching products,
+# syncing products, inventory, orders, and customers with the Shopify service.
+#
 # Actions:
-# - products: Fetches products from Shopify and returns them as JSON.
-#   - GET /shopify/products
-#   - Response: JSON array of products or error message with status 500.
-
-# - sync_products: Syncs products with Shopify and returns a success message.
-#   - POST /shopify/sync_products
-#   - Response: JSON message indicating success or error message with status 500.
-
-# - sync_inventory: Syncs product inventory with Shopify and returns a success message.
-#   - POST /shopify/sync_inventory
-#   - Response: JSON message indicating success or error message with status 500.
-
-# - sync_orders: Syncs orders with Shopify and returns a success message.
-#   - POST /shopify/sync_orders
-#   - Response: JSON message indicating success or error message with status 500.
+# - products: Fetches products from Shopify and renders them as JSON.
+# - sync_products: Syncs products with Shopify and renders a success message as JSON.
+# - sync_inventory: Syncs inventory with Shopify and renders a success message as JSON.
+# - sync_orders: Syncs orders with Shopify and renders a success message as JSON.
+# - sync_customers: Syncs customers with Shopify and renders a success message as JSON.
+#
+# In case of any errors during these actions, an error message is rendered as JSON with
+# a status of internal server error.
 class ShopifyController < ApplicationController
   def products
     products = ShopifyService.fetch_products
@@ -44,6 +37,13 @@ class ShopifyController < ApplicationController
   def sync_orders
     ShopifyService.sync_orders
     render json: { message: 'Orders synced successfully' }, status: :ok
+  rescue StandardError => e
+    render json: { error: e.message }, status: :internal_server_error
+  end
+
+  def sync_customers
+    ShopifyService.sync_customers
+    render json: { message: 'Customers synced successfully.' }, status: :ok
   rescue StandardError => e
     render json: { error: e.message }, status: :internal_server_error
   end

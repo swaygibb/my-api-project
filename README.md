@@ -119,6 +119,25 @@ This api integrates with the following store: https://swaygibb.myshopify.com
     }
     ```
 
+#### Sync Customers
+
+- **URL:** `/shopify/sync_customers`
+- **Method:** `GET`
+- **Description:** Synchronizes customers from the Shopify store and saves them to the database.
+- **Response:**
+  - **Status 200 OK:**
+    ```json
+    {
+      "message": "Customers synced successfully."
+    }
+    ```
+  - **Status 500 Internal Server Error:**
+    ```json
+    {
+      "error": "Error message"
+    }
+    ```
+
 ### Posts
 
 #### List Posts
