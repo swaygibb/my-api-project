@@ -62,6 +62,25 @@ This api integrates with the following store: https://swaygibb.myshopify.com
     }
     ```
 
+#### Sync Products
+
+- **URL:** `/shopify/sync_products`
+- **Method:** `POST`
+- **Description:** Synchronizes products from the Shopify store and saves them to the database.
+- **Response:**
+  - **Status 200 OK:**
+    ```json
+    {
+      "message": "Products synced successfully."
+    }
+    ```
+  - **Status 500 Internal Server Error:**
+    ```json
+    {
+      "error": "Error message"
+    }
+    ```
+
 ### Posts
 
 #### List Posts
