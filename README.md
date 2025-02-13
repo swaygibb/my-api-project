@@ -435,3 +435,7 @@ To run the tests, use the following command:
 ```sh
 bundle exec rspec
 ```
+
+## Run ngrok
+
+ngrok http 3000
