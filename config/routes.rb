@@ -31,4 +31,13 @@ Rails.application.routes.draw do
 
   # Route to sync customers from Shopify
   get 'shopify/sync_customers', to: 'shopify#sync_customers'
+
+  # Route to fetch products
+  get 'products', to: 'products#index'
+
+  # Route to fetch customers
+  get 'customers', to: 'customers#index'
+
+  # Route to fetch orders
+  get 'orders', to: 'orders#index'
 end

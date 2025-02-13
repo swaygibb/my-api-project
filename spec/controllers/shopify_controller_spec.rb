@@ -60,6 +60,8 @@ RSpec.describe ShopifyController, type: :controller do
       allow(ENV).to receive(:[]).with('SHOPIFY_STORE_NAME').and_return('mock_store_name')
       allow(ENV).to receive(:[]).with('AUTH_TOKEN').and_return('mock_auth_token')
       allow(ENV).to receive(:[]).with('ADMIN_API_ACCESS_TOKEN').and_return('mock_admin_api_token')
+      allow(ENV).to receive(:[]).with('DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL').and_return('false')
+      allow(ENV).to receive(:[]).with('DATABASE_CLEANER_ALLOW_PRODUCTION').and_return('false')
 
       request.headers['Authorization'] = 'mock_auth_token'
 

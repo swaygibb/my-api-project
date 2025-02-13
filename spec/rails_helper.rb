@@ -36,6 +36,8 @@ RSpec.configure do |config|
   # config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.fixture_paths = ["#{::Rails.root}/spec/fixtures"]
 
+  config.include FactoryBot::Syntax::Methods
+
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
@@ -74,6 +76,23 @@ RSpec.configure do |config|
   config.before(:each, type: :controller) do
     headers = { 'Authorization' => ENV['AUTH_TOKEN'] }
     request.headers.merge!(headers)
+  end
+
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.strategy = :transaction
+  end
+
+  config.before(:each, type: :request) do
+    # Ensures requests are cleaned with truncation
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
   end
 end
 
