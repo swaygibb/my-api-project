@@ -81,6 +81,25 @@ This api integrates with the following store: https://swaygibb.myshopify.com
     }
     ```
 
+#### Sync Inventory
+
+- **URL:** `/shopify/sync_inventory`
+- **Method:** `GET`
+- **Description:** Synchronizes inventory levels from the Shopify store and saves them to the database.
+- **Response:**
+  - **Status 200 OK:**
+    ```json
+    {
+      "message": "Inventory synced successfully."
+    }
+    ```
+  - **Status 500 Internal Server Error:**
+    ```json
+    {
+      "error": "Error message"
+    }
+    ```
+
 ### Posts
 
 #### List Posts

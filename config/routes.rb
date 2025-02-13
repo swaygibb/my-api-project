@@ -22,4 +22,7 @@ Rails.application.routes.draw do
 
   # Route to sync products from Shopify
   get 'shopify/sync_products', to: 'shopify#sync_products'
+
+  # Route to sync inventory from Shopify
+  get 'shopify/sync_inventory', to: 'shopify#sync_inventory'
 end
