@@ -2,6 +2,8 @@ require 'net/http'
 require 'uri'
 
 class HealthController < ApplicationController
+  # This action checks the health of the application by verifying the database connection
+  # and the reachability of an external service. It returns a JSON response with the health status.
   def check_health
     db_status = check_database
     external_service_status = check_external_service
@@ -21,6 +23,8 @@ class HealthController < ApplicationController
 
   private
 
+  # This method checks the database connection by executing a simple SQL query.
+  # It returns true if the connection is active, otherwise false.
   def check_database
     ActiveRecord::Base.connection.select_value('SELECT 1')
     Rails.logger.info("Database connection is active.")
@@ -30,6 +34,8 @@ class HealthController < ApplicationController
     false
   end
 
+  # This method checks the reachability of an external service by sending a GET request
+  # to a specific endpoint. It returns true if the service is reachable, otherwise false.
   def check_external_service
     base_uri = URI(ENV['EXTERNAL_SERVICE_URL'])
     full_uri = URI.join(base_uri.to_s, 'todos/1')
