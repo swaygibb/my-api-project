@@ -45,4 +45,55 @@ RSpec.describe ShopifyController, type: :controller do
       end
     end
   end
+
+  describe 'GET #sync_products' do
+    let(:products) do
+      [
+        { 'id' => 123456789, 'title' => 'Product 1', 'body_html' => '<strong>Good product!</strong>', 'vendor' => 'Vendor 1' },
+        { 'id' => 987654321, 'title' => 'Product 2', 'body_html' => '<strong>Another good product!</strong>', 'vendor' => 'Vendor 2' }
+      ]
+    end
+
+    before do
+      allow(ENV).to receive(:[]).with('SHOPIFY_API_KEY').and_return('mock_api_key')
+      allow(ENV).to receive(:[]).with('SHOPIFY_API_PASSWORD').and_return('mock_api_password')
+      allow(ENV).to receive(:[]).with('SHOPIFY_STORE_NAME').and_return('mock_store_name')
+      allow(ENV).to receive(:[]).with('AUTH_TOKEN').and_return('mock_auth_token')
+      allow(ENV).to receive(:[]).with('ADMIN_API_ACCESS_TOKEN').and_return('mock_admin_api_token')
+
+      request.headers['Authorization'] = 'mock_auth_token'
+
+      stub_request(:get, "https://mock_store_name.myshopify.com/admin/api/2021-04/products.json")
+        .with(headers: { 'Authorization' => /.*/ })
+        .to_return(status: 200, body: { products: products }.to_json, headers: { 'Content-Type' => 'application/json' })
+
+    end
+
+    context 'when the request is successful' do
+      before do
+        get :sync_products
+      end
+
+      it 'returns a successful response' do
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'returns a success message' do
+        json_response = JSON.parse(response.body)
+        expect(json_response['message']).to eq('Products synced successfully')
+      end
+    end
+
+    context 'when an error occurs' do
+      before do
+        allow(ShopifyService).to receive(:fetch_products).and_raise(StandardError.new('Something went wrong'))
+        get :sync_products
+      end
+
+      it 'returns the error message as JSON' do
+        json_response = JSON.parse(response.body)
+        expect(json_response['error']).to eq(nil)
+      end
+    end
+  end
 end

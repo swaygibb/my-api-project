@@ -19,4 +19,7 @@ Rails.application.routes.draw do
 
   # Route to fetch products from Shopify
   get 'shopify/products', to: 'shopify#products'
+
+  # Route to sync products from Shopify
+  get 'shopify/sync_products', to: 'shopify#sync_products'
 end
