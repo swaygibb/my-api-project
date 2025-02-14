@@ -65,3 +65,5 @@ end
 gem "shoulda-matchers", "~> 6.4", :group => :test
 gem 'rack-cors'
 
+gem 'devise'
+gem 'devise-jwt'
