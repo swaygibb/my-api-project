@@ -15,9 +15,16 @@
 #   end
 # end
 
+# Rails.application.config.middleware.insert_before 0, Rack::Cors do
+#   allow do
+#     origins "#{ENV['GROK_URL']}"  # Appsmith's local URL
+#     resource '*', headers: :any, methods: [:get, :post, :put, :patch, :delete, :options]
+#   end
+# end
+
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins "#{ENV['GROK_URL']}"  # Appsmith's local URL
-    resource '*', headers: :any, methods: [:get, :post, :put, :patch, :delete, :options]
+    origins '*' # Change to specific domains in production
+    resource '*', headers: :any, methods: [:get, :post, :patch, :put, :delete, :options], credentials: false
   end
 end
