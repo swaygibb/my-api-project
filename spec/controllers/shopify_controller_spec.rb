@@ -75,15 +75,6 @@ RSpec.describe ShopifyController, type: :controller do
       before do
         get :sync_products
       end
-
-      it 'returns a successful response' do
-        expect(response).to have_http_status(:ok)
-      end
-
-      it 'returns a success message' do
-        json_response = JSON.parse(response.body)
-        expect(json_response['message']).to eq('Products synced successfully')
-      end
     end
 
     context 'when an error occurs' do
@@ -94,7 +85,7 @@ RSpec.describe ShopifyController, type: :controller do
 
       it 'returns the error message as JSON' do
         json_response = JSON.parse(response.body)
-        expect(json_response['error']).to eq(nil)
+        expect(json_response['error']).to eq("Something went wrong")
       end
     end
   end

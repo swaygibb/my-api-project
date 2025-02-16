@@ -1,35 +1,48 @@
 require 'net/http'
 require 'json'
 
-# ShopifyService is a service class that interacts with the Shopify API to fetch and sync data.
+# ShopifyService is a service class responsible for interacting with the Shopify API.
+# It provides methods to fetch and synchronize products, inventory, orders, and customers
+# from a Shopify store to the local database.
+#
+# Constants:
+# API_VERSION - The version of the Shopify API to use.
+# BASE_URL - The base URL for the Shopify API, constructed using the store name and API version.
 #
 # Methods:
-# - fetch_products: Fetches all products from the Shopify store.
-# - sync_products: Fetches products from Shopify and updates or creates corresponding records in the local database.
-# - sync_inventory: Syncs inventory quantities for all products in the local database with Shopify.
-# - fetch_product_data: Fetches data for a specific product from Shopify using its Shopify ID.
-# - sync_orders: Fetches orders from Shopify and updates or creates corresponding records in the local database.
-# - sync_customers: Fetches customers from Shopify and updates or creates corresponding records in the local database.
+# .request_shopify_api(endpoint) - Sends a GET request to the specified Shopify API endpoint and returns the parsed JSON response.
+# .fetch_products - Fetches all products from the Shopify store.
+# .sync_products - Synchronizes products from the Shopify store to the local database.
+# .sync_inventory - Synchronizes inventory quantities for products from the Shopify store to the local database.
+# .fetch_product_data(shopify_id) - Fetches data for a specific product by its Shopify ID.
+# .sync_orders - Synchronizes orders from the Shopify store to the local database.
+# .sync_customers - Synchronizes customers from the Shopify store to the local database.
 class ShopifyService
-  def self.fetch_products
-    uri = URI("https://#{ENV['SHOPIFY_STORE_NAME']}.myshopify.com/admin/api/2021-04/products.json")
+  API_VERSION = "2021-04"
+  BASE_URL = "https://#{ENV['SHOPIFY_STORE_NAME']}.myshopify.com/admin/api/#{API_VERSION}"
+
+  def self.request_shopify_api(endpoint)
+    uri = URI("#{BASE_URL}/#{endpoint}.json")
     request = Net::HTTP::Get.new(uri)
     request.basic_auth(ENV['SHOPIFY_API_KEY'], ENV['ADMIN_API_ACCESS_TOKEN'])
+
     response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
       http.request(request)
     end
-    JSON.parse(response.body)
+
+    begin
+      JSON.parse(response.body)
+    rescue JSON::ParserError => e
+      { error: "Failed to parse JSON response", details: e.message }
+    end
+  end
+
+  def self.fetch_products
+    request_shopify_api("products")
   end
 
   def self.sync_products
-    uri = URI("https://#{ENV['SHOPIFY_STORE_NAME']}.myshopify.com/admin/api/2021-04/products.json")
-    request = Net::HTTP::Get.new(uri)
-    request.basic_auth(ENV['SHOPIFY_API_KEY'], ENV['ADMIN_API_ACCESS_TOKEN'])
-    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
-      http.request(request)
-    end
-    products = JSON.parse(response.body)['products']
-
+    products = fetch_products["products"] || []
     products.each do |product_data|
       product = Product.find_or_initialize_by(shopify_id: product_data['id'])
       product.update(
@@ -42,36 +55,20 @@ class ShopifyService
   end
 
   def self.sync_inventory
-    products = Product.all
-    products.each do |product|
+    Product.find_each do |product|
       product_data = fetch_product_data(product.shopify_id)
-      if product_data
-        product.update(inventory_quantity: product_data['variants'].sum { |variant| variant['inventory_quantity'] })
-      end
+      next unless product_data
+
+      product.update(inventory_quantity: product_data['variants'].sum { |variant| variant['inventory_quantity'] })
     end
   end
 
   def self.fetch_product_data(shopify_id)
-    uri = URI("https://#{ENV['SHOPIFY_STORE_NAME']}.myshopify.com/admin/api/2021-04/products/#{shopify_id}.json")
-    request = Net::HTTP::Get.new(uri)
-    request.basic_auth(ENV['SHOPIFY_API_KEY'], ENV['ADMIN_API_ACCESS_TOKEN'])
-    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
-      http.request(request)
-    end
-
-    JSON.parse(response.body)['product']
+    request_shopify_api("products/#{shopify_id}")["product"]
   end
 
   def self.sync_orders
-    uri = URI("https://#{ENV['SHOPIFY_STORE_NAME']}.myshopify.com/admin/api/2021-04/orders.json")
-    request = Net::HTTP::Get.new(uri)
-    request.basic_auth(ENV['SHOPIFY_API_KEY'], ENV['ADMIN_API_ACCESS_TOKEN'])
-    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
-      http.request(request)
-    end
-
-    orders = JSON.parse(response.body)['orders']
-
+    orders = request_shopify_api("orders")["orders"] || []
     orders.each do |order_data|
       order = Order.find_or_initialize_by(shopify_id: order_data['id'])
       order.update(
@@ -84,18 +81,10 @@ class ShopifyService
   end
 
   def self.sync_customers
-    uri = URI("https://#{ENV['SHOPIFY_STORE_NAME']}.myshopify.com/admin/api/2021-04/customers.json")
-    request = Net::HTTP::Get.new(uri)
-    request.basic_auth(ENV['SHOPIFY_API_KEY'], ENV['ADMIN_API_ACCESS_TOKEN'])
-    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
-      http.request(request)
-    end
+    response = request_shopify_api("customers")
+    puts "Response: #{response}"
 
-    puts "Response Code: #{response.code}"
-    puts "Response Body: #{response.body}"
-
-    customers = JSON.parse(response.body)['customers']
-
+    customers = response["customers"] || []
     customers.each do |customer_data|
       customer = Customer.find_or_initialize_by(shopify_id: customer_data['id'])
       customer.update(
