@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe ProductsController, type: :controller do
+  include Devise::Test::ControllerHelpers
+
   describe 'GET #index' do
     context 'when there are proudcts' do
       let!(:product) do

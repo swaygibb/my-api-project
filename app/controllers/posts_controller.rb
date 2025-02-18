@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   # GET /posts
   # Fetches all posts and renders them as JSON with pagination
   def index
-    posts = Post.page(params[:page] || 1).per(params[:per_page] || 10)
+    posts = Post.recent.page(params[:page] || 1).per(params[:per_page] || 10)
     render json: posts
   end
 

@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe PostsController, type: :controller do
+  include Devise::Test::ControllerHelpers
+
   let(:valid_attributes) { { title: 'New Post', body: 'This is a new post', user_id: 1 } }
   let(:invalid_attributes) { { title: '', body: '', user_id: nil } }
   let(:post) { Post.create!(valid_attributes) }
