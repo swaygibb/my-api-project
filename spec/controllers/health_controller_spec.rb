@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe HealthController, type: :controller do
+  include Devise::Test::ControllerHelpers
+
   describe 'GET #check_health' do
     context 'when both database and external service are healthy' do
       before do

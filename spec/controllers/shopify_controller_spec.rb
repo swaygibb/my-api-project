@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe ShopifyController, type: :controller do
+  include Devise::Test::ControllerHelpers
+
   describe 'GET #products' do
     context 'when the request is successful' do
       let(:products) do
@@ -62,6 +64,7 @@ RSpec.describe ShopifyController, type: :controller do
       allow(ENV).to receive(:[]).with('ADMIN_API_ACCESS_TOKEN').and_return('mock_admin_api_token')
       allow(ENV).to receive(:[]).with('DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL').and_return('false')
       allow(ENV).to receive(:[]).with('DATABASE_CLEANER_ALLOW_PRODUCTION').and_return('false')
+      allow(ENV).to receive(:[]).with('RAILS_CACHE_ID').and_return('mock_cache_id')
 
       request.headers['Authorization'] = 'mock_auth_token'
 

@@ -5,7 +5,7 @@ class ProductsController < ApplicationController
   #
   # @return [JSON] JSON representation of all products or an error message.
   def index
-    products = Product.all
+    products = Product.recent
     render json: products
   rescue StandardError => e
     render json: { error: e.message }, status: :internal_server_error
