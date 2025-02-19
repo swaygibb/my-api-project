@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ProductsController, type: :controller do
+RSpec.describe Api::V1::ProductsController, type: :controller do
   include Devise::Test::ControllerHelpers
 
   describe 'GET #index' do

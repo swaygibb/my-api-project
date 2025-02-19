@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe OrdersController, type: :controller do
+RSpec.describe Api::V1::OrdersController, type: :controller do
   include Devise::Test::ControllerHelpers
 
   describe 'GET #index' do

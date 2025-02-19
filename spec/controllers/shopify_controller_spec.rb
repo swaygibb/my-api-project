@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ShopifyController, type: :controller do
+RSpec.describe Api::V1::ShopifyController, type: :controller do
   include Devise::Test::ControllerHelpers
 
   describe 'GET #products' do
