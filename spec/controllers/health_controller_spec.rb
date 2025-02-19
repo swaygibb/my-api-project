@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe HealthController, type: :controller do
+RSpec.describe Api::V1::HealthController, type: :controller do
   include Devise::Test::ControllerHelpers
 
   describe 'GET #check_health' do

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe SyncController, type: :controller do
+RSpec.describe Api::V1::SyncController, type: :controller do
   include Devise::Test::ControllerHelpers
 
   describe 'GET #sync_posts' do

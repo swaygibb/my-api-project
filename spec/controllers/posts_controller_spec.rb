@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe PostsController, type: :controller do
+RSpec.describe Api::V1::PostsController, type: :controller do
   include Devise::Test::ControllerHelpers
 
   let(:valid_attributes) { { title: 'New Post', body: 'This is a new post', user_id: 1 } }
